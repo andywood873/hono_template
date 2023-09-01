@@ -1,20 +1,26 @@
-import { Hono } from "https://deno.land/x/hono@v3.4.1/mod.ts";
-import data from "./data.json" assert { type: "json" };
+import { serve } from "https://deno.land/std/http/mod.ts";
+const fileService = "https://api.opensea.io/";
+async function reqHandler(req: Request) {
+  const path = new URL(req.url).pathname;
 
-const app = new Hono();
+       var openSeaHeaders = new Headers();
+      openSeaHeaders.append("X-API-KEY", "36bcfeb8b7b848dd9eec125683d47078");
 
-app.get("/", (c) => c.text("Welcome to dinosaur API!"));
+      var openSeaRequestOptions = {
+        method: "GET",
+        headers: openSeaHeaders,
+        redirect: "follow",
+      };
 
-app.get("/api/", (c) => c.json(data));
+    //  const openSeaResponse = await fetch(
+  //      `https://api.opensea.io/v2/orders/ethereum/seaport/listings?order_by=created_date&order_direction=desc`,
+   //     openSeaRequestOptions
+   //   );
 
-app.get("/api/:dinosaur", (c) => {
-  const dinosaur = c.req.param("dinosaur").toLowerCase();
-  const found = data.find((item) => item.name.toLowerCase() === dinosaur);
-  if (found) {
-    return c.json(found);
-  } else {
-    return c.text("No dinosaurs found.");
-  }
-});
-
-Deno.serve(app.fetch);
+     // const openSeaData = await openSeaResponse.json();
+     // console.log("OpenSea Data:", openSeaData);
+  
+  const proxyRes = await fetch(fileService + path,openSeaRequestOptions);
+  return new Response(proxyRes, { status: proxyRes.status });
+}
+serve(reqHandler, { port:80 });
