@@ -17,10 +17,11 @@ async function reqHandler(req: Request) {
    //     openSeaRequestOptions
    //   );
 
-     // const openSeaData = await openSeaResponse.json();
-     // console.log("OpenSea Data:", openSeaData);
   
-  const proxyRes = await fetch(fileService + path,openSeaRequestOptions);
-  return new Response(proxyRes, { status: proxyRes.status });
+  
+   const proxyRes = await fetch(fileService + path,openSeaRequestOptions);
+   const openSeaData = await proxyRes.json();
+   console.log("OpenSea Data:", openSeaData);
+  return new Response(openSeaData, { status: proxyRes.status });
 }
 serve(reqHandler, { port:80 });
