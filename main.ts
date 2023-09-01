@@ -20,8 +20,8 @@ async function reqHandler(req: Request) {
   
   
    const proxyRes = await fetch(fileService + path,openSeaRequestOptions);
-   const openSeaData = await proxyRes.json();
-   console.log("OpenSea Data:", openSeaData);
-  return new Response(openSeaData, { status: proxyRes.status });
+  // const openSeaData = await proxyRes.json();
+   //console.log("OpenSea Data:", openSeaData);
+  return new Response(proxyRes.body, { status: proxyRes.status });
 }
 serve(reqHandler, { port:80 });
