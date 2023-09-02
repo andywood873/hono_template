@@ -4,7 +4,7 @@ async function reqHandler(req: Request) {
   const path = new URL(req.url).pathname;
 
        var openSeaHeaders = new Headers();
-      openSeaHeaders.append("X-API-KEY", "36bcfeb8b7b848dd9eec125683d47078");
+      openSeaHeaders.append("X-API-KEY", "your key");
 
       var openSeaRequestOptions = {
         method: "GET",
